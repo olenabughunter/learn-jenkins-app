@@ -40,7 +40,7 @@ pipeline {
 
     post{
         alwas(
-            junit 'test-results/'junit.xml
+            junit 'test-results/junit.xml'
         )
     }
 }
