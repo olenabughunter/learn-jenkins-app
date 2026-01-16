@@ -37,4 +37,10 @@ pipeline {
             }
         }
     }
+
+    post{
+        alwas(
+            junit 'test-results/'junit.xml
+        )
+    }
 }
