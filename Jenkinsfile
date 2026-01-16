@@ -39,7 +39,7 @@ pipeline {
     }
 
     post {
-        alwas{
+        always{
             junit 'test-results/junit.xml'
         }
     }
