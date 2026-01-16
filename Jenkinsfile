@@ -38,9 +38,9 @@ pipeline {
         }
     }
 
-    post{
-        alwas(
+    post {
+        alwas{
             junit 'test-results/junit.xml'
-        )
+        }
     }
 }
