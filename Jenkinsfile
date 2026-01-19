@@ -87,12 +87,13 @@ pipeline {
             }
             steps {
                 sh '''
-                    npm install netlify-cli
+                    npm install netlify-cli node-jq
                     node_modules/.bin/netlify --version
                     node_modules/.bin/netlify link --auth "$NETLIFY_AUTH_TOKEN" --id "$NETLIFY_PROJECT_ID"
                     echo "Deploying to staging. Project-id $NETLIFY_PROJECT_ID"
                     node_modules/.bin/netlify status 
                     node_modules/.bin/netlify deploy --dir=build --no-build --json > deploy-output.json
+                    node_modules/.bin//node-jq -r '.deploy_url' deploy-output.json
                 '''
             }
         }
