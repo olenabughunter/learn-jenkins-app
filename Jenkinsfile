@@ -78,30 +78,7 @@ pipeline {
 
         }
 
-       stage('Deploy Staging') {
-            agent{
-                docker{
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
-            steps {
-                sh '''
-                    npm install netlify-cli node-jq
-                    node_modules/.bin/netlify --version
-                    node_modules/.bin/netlify link --auth "$NETLIFY_AUTH_TOKEN" --id "$NETLIFY_PROJECT_ID"
-                    echo "Deploying to staging. Project-id $NETLIFY_PROJECT_ID"
-                    node_modules/.bin/netlify status 
-                    node_modules/.bin/netlify deploy --dir=build --no-build --json > deploy-output.json
-                    
-                '''
-                script{
-                    env.STAGING_URL = sh(script: "node_modules/.bin//node-jq -r '.deploy_url' deploy-output.json", returnStdout: true)
-                }
-            }
-        }
-
-        stage('E2E STAGING'){
+        stage('Deploy Staging'){
             agent{
                 docker{
                     image 'mcr.microsoft.com/playwright:v1.57.0-noble'
@@ -110,11 +87,18 @@ pipeline {
             }
 
             environment{
-                CI_ENVIRONMENT_URL = "${env.STAGING_URL}"
+                CI_ENVIRONMENT_URL = 'TO_BE_SET'
             }
 
             steps{
                 sh '''
+                    npm install netlify-cli node-jq
+                    node_modules/.bin/netlify --version
+                    node_modules/.bin/netlify link --auth "$NETLIFY_AUTH_TOKEN" --id "$NETLIFY_PROJECT_ID"
+                    echo "Deploying to staging. Project-id $NETLIFY_PROJECT_ID"
+                    node_modules/.bin/netlify status 
+                    node_modules/.bin/netlify deploy --dir=build --no-build --json > deploy-output.json
+                    CI_ENVIRONMENT_URL = $(node_modules/.bin//node-jq -r '.deploy_url' deploy-output.json)
                     npx playwright test --reporter=html
                 '''
             }
