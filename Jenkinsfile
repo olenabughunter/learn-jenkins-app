@@ -38,6 +38,7 @@ pipeline {
                         }
                         steps{
                             sh '''
+                                echo "Small change"
                                 echo 'Test stage'
                                 test -f build/index.html
                                 npm test
