@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment{
+        NETLIFY_PROJECT_ID = 'de52fdea-1984-488b-8e78-7743e7b343e6'
+        NETLIFY_AUTH_TOKEN = credentials('netlify')
+    }
+
     stages {
         stage('Build') {
             agent{
@@ -84,6 +89,8 @@ pipeline {
                 sh '''
                     npm install netlify-cli@20.1.1
                     node_modules/.bin/netlify --version
+                    echo "Deploying to production. Project-id $NETLIFY_PROJECT_ID"
+                    node_modules/.bin/netlify status
                 '''
             }
         }
