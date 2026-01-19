@@ -89,8 +89,6 @@ pipeline {
                 sh '''
                     npm install netlify-cli@20.1.1
                     node_modules/.bin/netlify --version
-                    node_modules/.bin/netlify logout
-                    node_modules/.bin/netlify login
                     echo "Deploying to production. Project-id $NETLIFY_PROJECT_ID"
                     node_modules/.bin/netlify status
                 '''
