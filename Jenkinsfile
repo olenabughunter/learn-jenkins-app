@@ -92,14 +92,14 @@ pipeline {
                     node_modules/.bin/netlify link --auth "$NETLIFY_AUTH_TOKEN" --id "$NETLIFY_PROJECT_ID"
                     echo "Deploying to staging. Project-id $NETLIFY_PROJECT_ID"
                     node_modules/.bin/netlify status 
-                    node_modules/.bin/netlify deploy --dir=build --no-build
+                    node_modules/.bin/netlify deploy --dir=build --no-build --json
                 '''
             }
         }
 
         stage('Approval') {
             steps {
-                timeout(time: 1, unit: 'MINUTES') {
+                timeout(time: 15, unit: 'MINUTES') {
                     input message: 'Do you wish to deploy to production?', ok: 'Yes, I am sure!'
                 }
             }
