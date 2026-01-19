@@ -92,7 +92,7 @@ pipeline {
                     node_modules/.bin/netlify link --auth "$NETLIFY_AUTH_TOKEN" --id "$NETLIFY_PROJECT_ID"
                     echo "Deploying to production. Project-id $NETLIFY_PROJECT_ID"
                     node_modules/.bin/netlify status 
-                    node_modules/.bin/netlify deploy --dir=build --prod
+                    node_modules/.bin/netlify deploy --dir=build --no-build --prod
                 '''
             }
         }
